@@ -90,8 +90,6 @@ public class Contact2Fragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-
     }
-
-
+    
 }

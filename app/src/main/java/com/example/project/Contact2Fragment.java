@@ -1,5 +1,11 @@
 package com.example.project;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentSender;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -36,6 +42,7 @@ import java.util.Scanner;
 /**
  * A simple {@link Fragment} subclass.
  */
+
 public class Contact2Fragment extends Fragment implements OnMapReadyCallback {
     Scanner scanner = new Scanner(System.in);
     GoogleMap mMap;
@@ -87,9 +94,11 @@ public class Contact2Fragment extends Fragment implements OnMapReadyCallback {
 
                 MarkerOptions marker = new MarkerOptions().position(new LatLng(point.latitude, point.longitude)).title("");
                 mMap.addMarker(marker);
+
             }
         });
 
+
     }
-    
+
 }

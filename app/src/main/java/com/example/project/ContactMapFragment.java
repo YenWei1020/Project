@@ -95,15 +95,7 @@ public class ContactMapFragment extends Fragment implements OnMapReadyCallback {
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(CCU, 15));// 移動鏡頭,zoom放大地圖
 
-        //點擊新增事件
-      /*  mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng point) {
 
-                MarkerOptions marker = new MarkerOptions().position(new LatLng(point.latitude, point.longitude)).title("New Marker");
-                mMap.addMarker(marker);
-            }
-        });*/
 
 
 

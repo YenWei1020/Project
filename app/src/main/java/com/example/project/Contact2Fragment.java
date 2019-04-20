@@ -111,30 +111,27 @@ public class Contact2Fragment extends Fragment implements OnMapReadyCallback
 
                 lat = point.latitude;
                 lon = point.longitude;
-               
-
+                final EditText editText = (EditText) view.findViewById(R.id.input);
                 builder = new AlertDialog.Builder(mContext);
                 builder.setView(view);
 
-                builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        MarkerOptions marker = new MarkerOptions().position(new LatLng(lat,lon)).title("");
-                        mMap.addMarker(marker);
                         dialog.dismiss();
                     }
 
                 });
-                builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        String m_Text = editText.getText().toString();
+                        MarkerOptions marker = new MarkerOptions().position(new LatLng(lat,lon)).title( m_Text);
+                        mMap.addMarker(marker);
                         dialog.dismiss();
                     }
                 });
                 alertDialog = builder.create();
-                alertDialog.setTitle("Describe the situation:");
+                alertDialog.setTitle("Describe the situation");
                 alertDialog.show();
-
-
-
             }
       });
 

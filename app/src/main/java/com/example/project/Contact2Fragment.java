@@ -6,6 +6,7 @@ import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,13 +24,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import android.widget.EditText;
 
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -43,17 +44,20 @@ import java.util.Scanner;
  * A simple {@link Fragment} subclass.
  */
 
-public class Contact2Fragment extends Fragment implements OnMapReadyCallback {
+public class Contact2Fragment extends Fragment implements OnMapReadyCallback
+{
     Scanner scanner = new Scanner(System.in);
     GoogleMap mMap;
-    double lat, lng;
+    public double lat,lon  ;
 
-    public Contact2Fragment() {
+    public Contact2Fragment()
+    {
         // Required empty public constructor
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
 
         View v = inflater.inflate(R.layout.fragment_contact_map, container, false);
 
@@ -61,9 +65,10 @@ public class Contact2Fragment extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
+    {
         super.onViewCreated(view, savedInstanceState);
-        SupportMapFragment mapFragment = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
     }
@@ -87,18 +92,55 @@ public class Contact2Fragment extends Fragment implements OnMapReadyCallback {
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(CCU, 15));// 移動鏡頭,zoom放大地圖
 
-        //點擊新增事件
-       mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng point) {
 
-                MarkerOptions marker = new MarkerOptions().position(new LatLng(point.latitude, point.longitude)).title("");
-                mMap.addMarker(marker);
+
+        //↓↓↓↓↓↓↓↓點擊新增事件↓↓↓↓↓↓↓↓
+       mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener()
+       {
+            @Override
+            public void onMapClick(LatLng point)
+            {
+
+
+                AlertDialog.Builder builder;
+                AlertDialog alertDialog;
+                Context mContext = Contact2Fragment.this.getContext();
+                LayoutInflater vi = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View view = vi.inflate(R.layout.alertdialog, null);
+
+
+                lat = point.latitude;
+                lon = point.longitude;
+               
+
+                builder = new AlertDialog.Builder(mContext);
+                builder.setView(view);
+
+                builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        MarkerOptions marker = new MarkerOptions().position(new LatLng(lat,lon)).title("");
+                        mMap.addMarker(marker);
+                        dialog.dismiss();
+                    }
+
+                });
+                builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alertDialog = builder.create();
+                alertDialog.setTitle("Describe the situation:");
+                alertDialog.show();
+
+
 
             }
-        });
+      });
 
 
+
+
+       //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
     }
-
 }

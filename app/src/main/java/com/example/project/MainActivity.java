@@ -42,12 +42,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     FragmentManager manager = getSupportFragmentManager();
                     manager.beginTransaction().replace(R.id.mainLayout,contactMapFragment).commit();
                     return true;
-                case R.id.navigation_search:
+                case R.id.navigation_add:
                     Contact2Fragment contact2Fragment = new Contact2Fragment();
                     FragmentManager manager2 = getSupportFragmentManager();
                     manager2.beginTransaction().replace(R.id.mainLayout,contact2Fragment).commit();
                     return true;
-                case R.id.navigation_favorite:
+                case R.id.navigation_delete:
 
                     return true;
             }

@@ -23,11 +23,14 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import android.widget.EditText;
-
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
@@ -100,18 +103,16 @@ public class Contact2Fragment extends Fragment implements OnMapReadyCallback
             @Override
             public void onMapClick(LatLng point)
             {
-
-
                 AlertDialog.Builder builder;
                 AlertDialog alertDialog;
                 Context mContext = Contact2Fragment.this.getContext();
                 LayoutInflater vi = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View view = vi.inflate(R.layout.alertdialog, null);
 
-
                 lat = point.latitude;
                 lon = point.longitude;
                 final EditText editText = (EditText) view.findViewById(R.id.input);
+
                 builder = new AlertDialog.Builder(mContext);
                 builder.setView(view);
 
@@ -119,12 +120,29 @@ public class Contact2Fragment extends Fragment implements OnMapReadyCallback
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
-
                 });
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        Context mContext = Contact2Fragment.this.getContext();
+                        LayoutInflater vi = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        View view = vi.inflate(R.layout.alertdialog, null);
+                        RadioGroup rg = (RadioGroup)view.findViewById(R.id.RadioGroup);
                         String m_Text = editText.getText().toString();
                         MarkerOptions marker = new MarkerOptions().position(new LatLng(lat,lon)).title( m_Text);
+
+
+                        switch(rg.getCheckedRadioButtonId()){
+                            case R.id.radioButton_Green:
+                                marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                                break;
+                            case R.id.radioButton_Yellow:
+                                marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                                break;
+                            case R.id.radioButton_Red:
+                                marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                                break;
+                        }
+
                         mMap.addMarker(marker);
                         dialog.dismiss();
                     }
@@ -135,9 +153,16 @@ public class Contact2Fragment extends Fragment implements OnMapReadyCallback
             }
       });
 
-
-
-
        //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+    }
+    public void onSelect(View view){
+        switch(view.getId()){
+            case R.id.radioButton_Green:
+
+                break;
+            case R.id.radioButton_Yellow:
+
+                break;
+        }
     }
 }

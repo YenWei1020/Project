@@ -41,6 +41,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
+import android.widget.Toast;
+
 import java.util.Scanner;
 
 /**
@@ -49,9 +51,11 @@ import java.util.Scanner;
 
 public class Contact2Fragment extends Fragment implements OnMapReadyCallback
 {
-    Scanner scanner = new Scanner(System.in);
-    GoogleMap mMap;
+    public  GoogleMap mMap;
+    public RadioGroup radioGroup;
+    public  RadioButton radioButton;
     public double lat,lon  ;
+
 
     public Contact2Fragment()
     {
@@ -103,6 +107,7 @@ public class Contact2Fragment extends Fragment implements OnMapReadyCallback
             @Override
             public void onMapClick(LatLng point)
             {
+
                 AlertDialog.Builder builder;
                 AlertDialog alertDialog;
                 Context mContext = Contact2Fragment.this.getContext();
@@ -116,24 +121,28 @@ public class Contact2Fragment extends Fragment implements OnMapReadyCallback
                 builder = new AlertDialog.Builder(mContext);
                 builder.setView(view);
 
+
+
                 builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 });
+
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+
                         Context mContext = Contact2Fragment.this.getContext();
                         LayoutInflater vi = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         View view = vi.inflate(R.layout.alertdialog, null);
                         RadioGroup rg = (RadioGroup)view.findViewById(R.id.RadioGroup);
                         String m_Text = editText.getText().toString();
+
                         MarkerOptions marker = new MarkerOptions().position(new LatLng(lat,lon)).title( m_Text);
 
-
-                        switch(rg.getCheckedRadioButtonId()){
+                        switch (rg.getId()){
                             case R.id.radioButton_Green:
-                                marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                                   marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                                 break;
                             case R.id.radioButton_Yellow:
                                 marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
@@ -143,10 +152,12 @@ public class Contact2Fragment extends Fragment implements OnMapReadyCallback
                                 break;
                         }
 
-                        mMap.addMarker(marker);
                         dialog.dismiss();
+                        mMap.addMarker(marker);
                     }
                 });
+
+
                 alertDialog = builder.create();
                 alertDialog.setTitle("Describe the situation");
                 alertDialog.show();
@@ -155,14 +166,5 @@ public class Contact2Fragment extends Fragment implements OnMapReadyCallback
 
        //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
     }
-    public void onSelect(View view){
-        switch(view.getId()){
-            case R.id.radioButton_Green:
 
-                break;
-            case R.id.radioButton_Yellow:
-
-                break;
-        }
-    }
 }

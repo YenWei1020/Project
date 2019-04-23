@@ -44,33 +44,39 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.util.Scanner;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+
+import com.google.android.gms.maps.GoogleMap;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
+public class Contact3Fragment extends Fragment  implements OnMapReadyCallback{
 
-public class Contact2Fragment extends Fragment implements OnMapReadyCallback
-{
-    public  GoogleMap mMap;
+    public GoogleMap mMap;
     public RadioGroup radioGroup;
-    public  RadioButton radioButton;
+    public RadioButton radioButton;
     public double lat,lon  ;
 
-
-    public Contact2Fragment()
-    {
+    public Contact3Fragment() {
         // Required empty public constructor
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_contact_map, container, false);
 
         return v;
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
@@ -100,27 +106,17 @@ public class Contact2Fragment extends Fragment implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(CCU, 15));// 移動鏡頭,zoom放大地圖
 
 
+        //↓↓↓↓↓↓↓↓點擊刪除事件↓↓↓↓↓↓↓↓
 
-        //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-       mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener()
-       {
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
-            public void onMapClick(LatLng point)
-            {
-
+            public boolean onMarkerClick(final Marker marker) {
                 AlertDialog.Builder builder;
                 AlertDialog alertDialog;
-                Context mContext = Contact2Fragment.this.getContext();
-                LayoutInflater vi = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View view = vi.inflate(R.layout.alertdialog, null);
-                RadioGroup rg = (RadioGroup)view.findViewById(R.id.RadioGroup);
-                lat = point.latitude;
-                lon = point.longitude;
-                final EditText editText = (EditText) view.findViewById(R.id.input);
+                Context mContext = Contact3Fragment.this.getContext();
+
 
                 builder = new AlertDialog.Builder(mContext);
-                builder.setView(view);
-
 
 
                 builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
@@ -128,50 +124,23 @@ public class Contact2Fragment extends Fragment implements OnMapReadyCallback
                         dialog.dismiss();
                     }
                 });
-
-                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-
-                        Context mContext = Contact2Fragment.this.getContext();
-                        LayoutInflater vi = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        View view = vi.inflate(R.layout.alertdialog, null);
-                        RadioGroup rg = (RadioGroup)view.findViewById(R.id.RadioGroup);
-                        String m_Text = editText.getText().toString();
-
-                        MarkerOptions marker = new MarkerOptions().position(new LatLng(lat,lon)).title( m_Text);
-
-
-                        switch (rg.getCheckedRadioButtonId()){
-                            case R.id.radioButton_Green:{
-                            Toast.makeText(Contact2Fragment.this.getContext(),"green",Toast.LENGTH_SHORT).show();
-                                   marker.title("綠");
-                                break;
-                            }
-                            case R.id.radioButton_Yellow: {
-                                Toast.makeText(Contact2Fragment.this.getContext(),"blue",Toast.LENGTH_SHORT).show();
-                                marker.title("藍");
-                                break;
-                            }
-                            case R.id.radioButton_Red: {
-                                Toast.makeText(Contact2Fragment.this.getContext(),"red",Toast.LENGTH_SHORT).show();
-                                marker.title("紅");
-                                break;
-                            }
-                        }
-
+                        marker.remove();
                         dialog.dismiss();
-                        mMap.addMarker(marker);
                     }
+
                 });
-
-
+                builder.setMessage(marker.getTitle());
                 alertDialog = builder.create();
-                alertDialog.setTitle("Describe the situation");
-                alertDialog.show();
-            }
-      });
+                alertDialog.setTitle("確定要刪除嗎?");
 
-       //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+                alertDialog.show();
+                return false;
+            }
+
+        });
+        //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
     }
 
 }

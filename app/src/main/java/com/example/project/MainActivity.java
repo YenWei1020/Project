@@ -48,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     manager2.beginTransaction().replace(R.id.mainLayout,contact2Fragment).commit();
                     return true;
                 case R.id.navigation_delete:
+                    Contact3Fragment contact3Fragment = new Contact3Fragment();
+                    FragmentManager manager3 = getSupportFragmentManager();
+                    manager3.beginTransaction().replace(R.id.mainLayout,contact3Fragment).commit();
 
                     return true;
             }

@@ -42,21 +42,18 @@
                 android:id="@+id/radioButton_Green"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
                 android:text="@string/Green" />
 
             <RadioButton
                 android:id="@+id/radioButton_Yellow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
                 android:text="@string/Yellow" />
 
             <RadioButton
                 android:id="@+id/radioButton_Red"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
                 android:text="@string/Red" />
 
         </RadioGroup>

@@ -77,7 +77,6 @@ public class Contact2Fragment extends Fragment implements OnMapReadyCallback
         super.onViewCreated(view, savedInstanceState);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
     }
 
     @Override
@@ -85,21 +84,18 @@ public class Contact2Fragment extends Fragment implements OnMapReadyCallback
         mMap = googleMap;
 
         LatLng CCU = new LatLng(23.558581, 120.471984);//經緯度
-        mMap.addMarker(new MarkerOptions().position(CCU).title("施工"));
+        mMap.addMarker(new MarkerOptions().position(CCU).title("施工").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         LatLng CCU2 = new LatLng(23.554112, 120.471760);//經緯度
-        mMap.addMarker(new MarkerOptions().position(CCU2).title("施工"));
+        mMap.addMarker(new MarkerOptions().position(CCU2).title("施工").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
         LatLng CCU3 = new LatLng(23.555232, 120.471720);//經緯度
-        mMap.addMarker(new MarkerOptions().position(CCU3).title("施工"));
+        mMap.addMarker(new MarkerOptions().position(CCU3).title("施工").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
         LatLng CCU4 = new LatLng(23.556255, 120.471698);//經緯度
-        mMap.addMarker(new MarkerOptions().position(CCU4).title("施工"));
+        mMap.addMarker(new MarkerOptions().position(CCU4).title("施工").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
         LatLng CCU5 = new LatLng(23.560212, 120.445500);//經緯度
-        mMap.addMarker(new MarkerOptions().position(CCU5).title("道路顛簸"));
+        mMap.addMarker(new MarkerOptions().position(CCU5).title("道路顛簸").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
 
         mMap.getUiSettings().setCompassEnabled(true);       // 左上角的指南針，要兩指旋轉才會出現
-
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(CCU, 15));// 移動鏡頭,zoom放大地圖
-
-
 
         //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener()
@@ -120,8 +116,28 @@ public class Contact2Fragment extends Fragment implements OnMapReadyCallback
 
                 builder = new AlertDialog.Builder(mContext);
                 builder.setView(view);
+                String m_Text = editText.getText().toString();
+                final MarkerOptions marker = new MarkerOptions().position(new LatLng(lat,lon)).title("未說明").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 
-
+                rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        switch (checkedId){
+                            case R.id.radioButton_Green:
+                                group.check(R.id.radioButton_Green);
+                                marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                                break;
+                            case R.id.radioButton_Yellow:
+                                group.check(R.id.radioButton_Yellow);
+                                marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)) ;
+                                break;
+                            case R.id.radioButton_Red:
+                                group.check(R.id.radioButton_Red);
+                                marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)) ;
+                                break;
+                        }
+                    }
+                });
 
                 builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -138,40 +154,20 @@ public class Contact2Fragment extends Fragment implements OnMapReadyCallback
                         RadioGroup rg = (RadioGroup)view.findViewById(R.id.RadioGroup);
                         String m_Text = editText.getText().toString();
 
-                        MarkerOptions marker = new MarkerOptions().position(new LatLng(lat,lon)).title( m_Text);
+                        if(m_Text == null||m_Text.isEmpty())
+                            marker.title("未說明");
+                        else
+                            marker.title(m_Text);
 
-
-                        switch (rg.getCheckedRadioButtonId()){
-                            case R.id.radioButton_Green:{
-                            Toast.makeText(Contact2Fragment.this.getContext(),"green",Toast.LENGTH_SHORT).show();
-                                   marker.title("綠");
-                                break;
-                            }
-                            case R.id.radioButton_Yellow: {
-                                Toast.makeText(Contact2Fragment.this.getContext(),"blue",Toast.LENGTH_SHORT).show();
-                                marker.title("藍");
-                                break;
-                            }
-                            case R.id.radioButton_Red: {
-                                Toast.makeText(Contact2Fragment.this.getContext(),"red",Toast.LENGTH_SHORT).show();
-                                marker.title("紅");
-                                break;
-                            }
-                        }
-
-                        dialog.dismiss();
                         mMap.addMarker(marker);
+                        dialog.dismiss();
                     }
                 });
-
-
                 alertDialog = builder.create();
                 alertDialog.setTitle("Describe the situation");
                 alertDialog.show();
             }
       });
-
        //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
     }
-
 }

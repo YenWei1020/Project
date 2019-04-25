@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,8 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
-
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import java.util.Scanner;
 
 /**
@@ -55,6 +57,7 @@ public class Contact2Fragment extends Fragment implements OnMapReadyCallback
     public RadioGroup radioGroup;
     public  RadioButton radioButton;
     public double lat,lon  ;
+
 
 
     public Contact2Fragment()
@@ -83,19 +86,28 @@ public class Contact2Fragment extends Fragment implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        LatLng CCU = new LatLng(23.558581, 120.471984);//經緯度
-        mMap.addMarker(new MarkerOptions().position(CCU).title("施工").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-        LatLng CCU2 = new LatLng(23.554112, 120.471760);//經緯度
-        mMap.addMarker(new MarkerOptions().position(CCU2).title("施工").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
-        LatLng CCU3 = new LatLng(23.555232, 120.471720);//經緯度
-        mMap.addMarker(new MarkerOptions().position(CCU3).title("施工").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
-        LatLng CCU4 = new LatLng(23.556255, 120.471698);//經緯度
-        mMap.addMarker(new MarkerOptions().position(CCU4).title("施工").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-        LatLng CCU5 = new LatLng(23.560212, 120.445500);//經緯度
-        mMap.addMarker(new MarkerOptions().position(CCU5).title("道路顛簸").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(23.558581, 120.471984))
+                .title("施工")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+
+        mMap.addMarker(new MarkerOptions().position(new LatLng(23.554112, 120.471760))
+                .title("施工")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+
+        mMap.addMarker(new MarkerOptions().position(new LatLng(23.555232, 120.471720))
+                .title("施工")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+
+        mMap.addMarker(new MarkerOptions().position(new LatLng(23.556255, 120.471698))
+                .title("施工")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+
+        mMap.addMarker(new MarkerOptions().position(new LatLng(23.560212, 120.445500))
+                .title("道路顛簸")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
 
         mMap.getUiSettings().setCompassEnabled(true);       // 左上角的指南針，要兩指旋轉才會出現
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(CCU, 15));// 移動鏡頭,zoom放大地圖
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(23.558581, 120.471984), 15));// 移動鏡頭,zoom放大地圖
 
         //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener()
@@ -141,6 +153,7 @@ public class Contact2Fragment extends Fragment implements OnMapReadyCallback
 
                 builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(Contact2Fragment.this.getContext(),"取消",Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 });
@@ -154,12 +167,14 @@ public class Contact2Fragment extends Fragment implements OnMapReadyCallback
                         RadioGroup rg = (RadioGroup)view.findViewById(R.id.RadioGroup);
                         String m_Text = editText.getText().toString();
 
-                        if(m_Text == null||m_Text.isEmpty())
+                        if(m_Text.isEmpty())
                             marker.title("未說明");
                         else
                             marker.title(m_Text);
 
                         mMap.addMarker(marker);
+                        Toast.makeText(Contact2Fragment.this.getContext(),"新增完成",Toast.LENGTH_SHORT).show();
+
                         dialog.dismiss();
                     }
                 });

@@ -90,20 +90,29 @@ public class Contact3Fragment extends Fragment  implements OnMapReadyCallback{
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        LatLng CCU = new LatLng(23.558581, 120.471984);//經緯度
-        mMap.addMarker(new MarkerOptions().position(CCU).title("施工"));
-        LatLng CCU2 = new LatLng(23.554112, 120.471760);//經緯度
-        mMap.addMarker(new MarkerOptions().position(CCU2).title("施工"));
-        LatLng CCU3 = new LatLng(23.555232, 120.471720);//經緯度
-        mMap.addMarker(new MarkerOptions().position(CCU3).title("施工"));
-        LatLng CCU4 = new LatLng(23.556255, 120.471698);//經緯度
-        mMap.addMarker(new MarkerOptions().position(CCU4).title("施工"));
-        LatLng CCU5 = new LatLng(23.560212, 120.445500);//經緯度
-        mMap.addMarker(new MarkerOptions().position(CCU5).title("道路顛簸"));
 
+        mMap.addMarker(new MarkerOptions().position(new LatLng(23.558581, 120.471984))
+                .title("施工")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+
+        mMap.addMarker(new MarkerOptions().position(new LatLng(23.554112, 120.471760))
+                .title("施工")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+
+        mMap.addMarker(new MarkerOptions().position(new LatLng(23.555232, 120.471720))
+                .title("施工")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+
+        mMap.addMarker(new MarkerOptions().position(new LatLng(23.556255, 120.471698))
+                .title("施工")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+
+        mMap.addMarker(new MarkerOptions().position(new LatLng(23.560212, 120.445500))
+                .title("道路顛簸")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
         mMap.getUiSettings().setCompassEnabled(true);       // 左上角的指南針，要兩指旋轉才會出現
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(CCU, 15));// 移動鏡頭,zoom放大地圖
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(23.558581, 120.471984), 15));// 移動鏡頭,zoom放大地圖
 
 
         //↓↓↓↓↓↓↓↓點擊刪除事件↓↓↓↓↓↓↓↓
@@ -121,12 +130,14 @@ public class Contact3Fragment extends Fragment  implements OnMapReadyCallback{
 
                 builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(Contact3Fragment.this.getContext(),"取消",Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 });
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         marker.remove();
+                        Toast.makeText(Contact3Fragment.this.getContext(),"移除成功",Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
 
